@@ -1,4 +1,3 @@
-"""Plain-Python logic behind the API (no web framework here, so it is easy to test)."""
 from dataclasses import asdict
 from datetime import date
 from typing import Optional
@@ -11,7 +10,7 @@ from kisanlabel.toxicity import describe
 
 
 class BadInput(ValueError):
-    """The caller sent something we can't use. The API turns this into HTTP 422."""
+    pass
 
 
 def check_soil(key: str) -> None:
@@ -25,7 +24,6 @@ def check_language(name: str) -> None:
 
 
 def analyze(label: dict, use_index: Optional[int], tank_litres: float, spray_date: Optional[date], soil: str):
-    """Do all the maths for one scanned label. Returns (result for the client, facts for the explainer)."""
     check_soil(soil)
     uses = label.get("uses") or []
     use = None

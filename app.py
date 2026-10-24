@@ -1,23 +1,3 @@
-"""KisanLabel — interactive, creative, simple Streamlit UI.
-
-DROP-IN INSTRUCTIONS (for the team):
-  1. Copy this file into the root of the Spooky_Wookys project,
-     next to app.py (so `kisanlabel/` is in the same folder).
-  2. Run:  streamlit run ui.py
-  3. No backend server needed. This UI calls the same kisanlabel
-     modules as app.py / backend/ directly — Gemma only reads and
-     explains, Python does all dose / harvest maths.
-
-What is new vs the old app.py:
-  - No sidebar (hidden on phones). Everything is in one thumb-friendly flow.
-  - 3-step journey:  1 Photo  ->  2 Your field  ->  3 Result card
-  - Tank slider + crop + spray date update the dose LIVE, with no
-    second Gemma call — pure Python maths, so judges can play with it.
-  - Dose is a big hero number, harvest is a visual timeline,
-    safety is a tick-off checklist with a progress bar.
-  - "Try a demo label" works with NO photo and NO API key, so a
-    live demo never dies on stage. It is clearly marked DEMO.
-"""
 import datetime as dt
 
 import streamlit as st
@@ -32,8 +12,7 @@ from kisanlabel.recommend import find_products, load_products
 from kisanlabel.soil import SOILS, soil_cautions
 from kisanlabel.toxicity import describe
 
-# ------------------------------------------------------------------ demo label
-# Clearly fake, for UI demo only. Never presented as real advice.
+
 DEMO_LABEL = {
     "product_name": "Sample Label (DEMO)",
     "active_ingredient": "Demo active ingredient",
@@ -62,10 +41,6 @@ TOXICITY_CSS = {
 
 
 def pick(label, options, key, default=None):
-    """segmented_control when available, selectbox otherwise (old Streamlit).
-    FIX for KeyError: None: segmented_control returns None when the user
-    clicks the selected pill again to deselect it. Never pass None on —
-    fall back to the default option instead of crashing."""
     fallback = default or options[0]
     if hasattr(st, "segmented_control"):
         result = st.segmented_control(label, options, key=key, default=fallback)
@@ -106,8 +81,6 @@ HEADINGS = {
 
 
 def tr(language_value, en, hi=None, mr=None):
-    """Translate a UI heading for ALL 9 languages in LANGUAGES.
-    Headings come from HEADINGS above; hi/mr args are kept as fallback."""
     if en in HEADINGS and language_value in HEADINGS[en]:
         return HEADINGS[en][language_value]
     if language_value == "Hindi" and hi:
@@ -117,10 +90,6 @@ def tr(language_value, en, hi=None, mr=None):
     return en
 
 
-# Known strings only: soil cautions (from kisanlabel/soil.py) and generic
-# PPE items. Arbitrary label text (safety_steps / first_aid as printed)
-# is NOT dictionary-translated — Gemma's Explain paragraph translates it,
-# and the original is kept so it can be checked against the bottle.
 KNOWN_TEXT = {
     "Water drains fast here, so chemicals can wash down toward groundwater. Keep well away from wells and borewells.": {
         "Hindi": "यहाँ पानी जल्दी नीचे चला जाता है, इसलिए रसायन भूजल तक पहुँच सकते हैं। कुओं और बोरवेल से दूर रहें।",
@@ -172,9 +141,6 @@ KNOWN_TEXT = {
 }
 
 
-# Extended to all languages. UI translations are best-effort and simple;
-# check by a native speaker before any real rollout. Gemma's Explain
-# paragraph is the full translation for arbitrary label text.
 SOIL_EXTENDED = {
     "Water drains fast here, so chemicals can wash down toward groundwater. Keep well away from wells and borewells.": {
         "Gujarati": "અહીં પાણી ઝડપથી નીચે જાય છે, તેથી રસાયણો ભૂગર્ભજળ સુધી પહોંચી શકે છે. કૂવા અને બોરવેલથી દૂર રહો.",
@@ -295,7 +261,6 @@ SOIL_EXTENDED = {
 
 
 def tr_known(text, language_value):
-    """Translate a known string, else return it unchanged (label original)."""
     if text in KNOWN_TEXT and language_value in KNOWN_TEXT[text]:
         return KNOWN_TEXT[text][language_value]
     if text in SOIL_EXTENDED and language_value in SOIL_EXTENDED[text]:
@@ -303,112 +268,169 @@ def tr_known(text, language_value):
     return text
 
 
+UI_STRINGS = {
+    "Mix in one": {"Hindi": "एक में मिलाएँ", "Marathi": "एका मध्ये मिसळा", "Gujarati": "એકમાં ભેળવો", "Tamil": "ஒன்றில் கலக்கவும்", "Telugu": "ఒకదానిలో కలపండి", "Kannada": "ಒಂದರಲ್ಲಿ ಬೆರೆಸಿ", "Bengali": "একটিতে মেশান", "Punjabi": "ਇੱਕ ਵਿੱਚ ਮਿਲਾਓ"},
+    "tank": {"Hindi": "टंकी", "Marathi": "टाकी", "Gujarati": "ટાંકી", "Tamil": "தொட்டி", "Telugu": "ట్యాంకు", "Kannada": "ಟ್ಯಾಂಕ್", "Bengali": "ট্যাঙ্ক", "Punjabi": "ਟੈਂਕੀ"},
+    "Working": {"Hindi": "हिसाब", "Marathi": "हिशोब", "Gujarati": "ગણતરી", "Tamil": "கணக்கு", "Telugu": "లెక్క", "Kannada": "ಲೆಕ್ಕ", "Bengali": "হিসাব", "Punjabi": "ਹਿਸਾਬ"},
+    "One tank covers about": {"Hindi": "एक टंकी लगभग", "Marathi": "एक टाकी सुमारे", "Gujarati": "એક ટાંકી લગભગ", "Tamil": "ஒரு தொட்டி சுமார்", "Telugu": "ఒక ట్యాంకు సుమారు", "Kannada": "ಒಂದು ಟ್ಯಾಂಕ್ ಸುಮಾರು", "Bengali": "একটি ট্যাঙ্ক প্রায়", "Punjabi": "ਇੱਕ ਟੈਂਕੀ ਲਗਭਗ"},
+    "acre": {"Hindi": "एकड़", "Marathi": "एकर", "Gujarati": "એકર", "Tamil": "ஏக்கர்", "Telugu": "ఎకరం", "Kannada": "ಎಕರೆ", "Bengali": "একর", "Punjabi": "ਏਕੜ"},
+    "Spray": {"Hindi": "छिड़काव", "Marathi": "फवारणी", "Gujarati": "છંટકાવ", "Tamil": "தெளிப்பு", "Telugu": "పిచికారీ", "Kannada": "ಸಿಂಪಡಣೆ", "Bengali": "স্প্রে", "Punjabi": "ਸਪਰੇਅ"},
+    "Wait": {"Hindi": "प्रतीक्षा", "Marathi": "प्रतीक्षा", "Gujarati": "રાહ જુઓ", "Tamil": "காத்திருங்கள்", "Telugu": "వేచి ఉండండి", "Kannada": "ಕಾಯಿರಿ", "Bengali": "অপেক্ষা", "Punjabi": "ਉਡੀਕ"},
+    "Harvest from": {"Hindi": "कटाई से", "Marathi": "कापणी पासून", "Gujarati": "કાપણીથી", "Tamil": "அறுவடை முதல்", "Telugu": "కోత నుండి", "Kannada": "ಕೊಯ್ಲಿನಿಂದ", "Bengali": "কাটা থেকে", "Punjabi": "ਵਾਢੀ ਤੋਂ"},
+    "days": {"Hindi": "दिन", "Marathi": "दिवस", "Gujarati": "દિવસ", "Tamil": "நாட்கள்", "Telugu": "రోజులు", "Kannada": "ದಿನಗಳು", "Bengali": "দিন", "Punjabi": "ਦਿਨ"},
+    "Safety ready": {"Hindi": "सुरक्षा तैयार", "Marathi": "सुरक्षा तयार", "Gujarati": "સલામતી તૈયાર", "Tamil": "பாதுகாப்பு தயார்", "Telugu": "భద్రత సిద్ధం", "Kannada": "ಸುರಕ್ಷತೆ ಸಿದ್ಧ", "Bengali": "নিরাপত্তা প্রস্তুত", "Punjabi": "ਸੁਰੱਖਿਆ ਤਿਆਰ"},
+    "ticked": {"Hindi": "टिक किए गए", "Marathi": "टिक केलेले", "Gujarati": "ટિક કરેલા", "Tamil": "டிக் செய்யப்பட்டது", "Telugu": "టిక్ చేసినవి", "Kannada": "ಟಿಕ್ ಮಾಡಲಾಗಿದೆ", "Bengali": "টিক দেওয়া", "Punjabi": "ਟਿਕ ਲਗਾਏ"},
+    "All safety steps ticked. Still follow the printed label.": {"Hindi": "सभी सुरक्षा कदम टिक कर दिए गए। फिर भी छपे लेबल का पालन करें।", "Marathi": "सर्व सुरक्षा पायऱ्या टिक केल्या आहेत. तरीही छापील लेबलचे पालन करा.", "Gujarati": "બધા સલામતી પગલાં ટિક કર્યા છે. છતાં છાપેલા લેબલનું પાલન કરો.", "Tamil": "அனைத்து பாதுகாப்பு படிகளும் டிக் செய்யப்பட்டன. இன்னும் அச்சிடப்பட்ட லேபிளைப் பின்பற்றவும்.", "Telugu": "అన్ని భద్రతా చర్యలు టిక్ చేయబడ్డాయి. అయినా ముద్రించిన లేబుల్‌ను పాటించండి.", "Kannada": "ಎಲ್ಲಾ ಸುರಕ್ಷತಾ ಹಂತಗಳನ್ನು ಟಿಕ್ ಮಾಡಲಾಗಿದೆ. ಆದರೂ ಮುದ್ರಿತ ಲೇಬಲ್ ಅನ್ನು ಅನುಸರಿಸಿ.", "Bengali": "সব নিরাপত্তা ধাপ টিক দেওয়া হয়েছে। তবুও ছাপা লেবেল মেনে চলুন।", "Punjabi": "ਸਾਰੇ ਸੁਰੱਖਿਆ ਕਦਮ ਟਿਕ ਲਗਾਏ ਗਏ ਹਨ। ਫਿਰ ਵੀ ਛਪੇ ਲੇਬਲ ਦੀ ਪਾਲਣਾ ਕਰੋ।"},
+    "First aid (from the label)": {"Hindi": "प्राथमिक उपचार (लेबल से)", "Marathi": "प्रथमोपचार (लेबलवरून)", "Gujarati": "પ્રાથમિક સારવાર (લેબલ પરથી)", "Tamil": "முதலுதவி (லேபிளில் இருந்து)", "Telugu": "ప్రథమ చికిత్స (లేబుల్ నుండి)", "Kannada": "ಪ್ರಥಮ ಚಿಕಿತ್ಸೆ (ಲೇಬಲ್‌ನಿಂದ)", "Bengali": "প্রাথমিক চিকিৎসা (লেবেল থেকে)", "Punjabi": "ਮੁੱਢਲੀ ਸਹਾਇਤਾ (ਲੇਬਲ ਤੋਂ)"},
+    "Raw data read from the label (for judges)": {"Hindi": "लेबल से पढ़ा गया कच्चा डेटा (जजों के लिए)", "Marathi": "लेबलवरून वाचलेला कच्चा डेटा (परीक्षकांसाठी)", "Gujarati": "લેબલ પરથી વાંચેલો કાચો ડેટા (ન્યાયાધીશો માટે)", "Tamil": "லேபிளில் இருந்து படிக்கப்பட்ட மூல தரவு (நடுவர்களுக்கு)", "Telugu": "లేబుల్ నుండి చదివిన ముడి డేటా (న్యాయనిర్ణేతల కోసం)", "Kannada": "ಲೇಬಲ್‌ನಿಂದ ಓದಲಾದ ಕಚ್ಚಾ ಡೇಟಾ (ನ್ಯಾಯಾಧೀಶರಿಗಾಗಿ)", "Bengali": "লেবেল থেকে পড়া কাঁচা তথ্য (বিচারকদের জন্য)", "Punjabi": "ਲੇਬਲ ਤੋਂ ਪੜ੍ਹਿਆ ਕੱਚਾ ਡਾਟਾ (ਜੱਜਾਂ ਲਈ)"},
+    "Explain": {"Hindi": "समझाएँ", "Marathi": "स्पष्टीकरण", "Gujarati": "સમજાવો", "Tamil": "விளக்கவும்", "Telugu": "వివరించండి", "Kannada": "ವಿವರಿಸಿ", "Bengali": "ব্যাখ্যা করুন", "Punjabi": "ਸਮਝਾਓ"},
+    "Label wording stays as printed so you can check it against the bottle — the Explain paragraph below translates it in full.": {"Hindi": "लेबल की शब्दावली जैसी छपी है वैसी ही रहती है ताकि आप इसे बोतल से मिला सकें — नीचे का Explain अनुच्छेद इसे पूरा अनुवाद करता है।", "Marathi": "लेबलवरील शब्द जसे छापले आहेत तसेच राहतात, जेणेकरून तुम्ही ते बाटलीशी तपासू शकता — खालील Explain परिच्छेद त्याचा पूर्ण अनुवाद करतो."},
+    "Always check the printed label.": {"Hindi": "हमेशा छपे लेबल की जाँच करें।", "Marathi": "नेहमी छापील लेबल तपासा।", "Gujarati": "હંમેશા છાપેલા લેબલની તપાસ કરો.", "Tamil": "எப்போதும் அச்சிடப்பட்ட லேபிளைச் சரிபார்க்கவும்.", "Telugu": "ఎల్లప్పుడూ ముద్రించిన లేబుల్‌ను తనిఖీ చేయండి.", "Kannada": "ಯಾವಾಗಲೂ ಮುದ್ರಿತ ಲೇಬಲ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ.", "Bengali": "সবসময় ছাপা লেবেল পরীক্ষা করুন।", "Punjabi": "ਹਮੇਸ਼ਾ ਛਪੇ ਲੇਬਲ ਦੀ ਜਾਂਚ ਕਰੋ।"},
+    "Unsure? Call": {"Hindi": "शक है? कॉल करें", "Marathi": "शंका आहे? कॉल करा", "Gujarati": "શંકા છે? કૉલ કરો", "Tamil": "சந்தேகமா? அழைக்கவும்", "Telugu": "సందేహమా? కాల్ చేయండి", "Kannada": "ಸಂದೇಹವಿದೆಯೇ? ಕರೆ ಮಾಡಿ", "Bengali": "সন্দেহ? কল করুন", "Punjabi": "ਸ਼ੱਕ ਹੈ? ਕਾਲ ਕਰੋ"},
+    "or ask your local agriculture officer / Krishi Vigyan Kendra.": {"Hindi": "या अपने स्थानीय कृषि अधिकारी / कृषि विज्ञान केंद्र से पूछें।", "Marathi": "किंवा तुमच्या स्थानिक कृषी अधिकाऱ्याला / कृषी विज्ञान केंद्राला विचारा।", "Gujarati": "અથવા તમારા સ્થાનિક કૃષિ અધિકારી / કૃષિ વિજ્ઞાન કેન્દ્રને પૂછો.", "Tamil": "அல்லது உங்கள் உள்ளூர் வேளாண் அதிகாரி / கிருஷி விஞ்ஞான் கேந்திராவிடம் கேளுங்கள்.", "Telugu": "లేదా మీ స్థానిక వ్యవసాయ అధికారి / కృషి విజ్ఞాన కేంద్రాన్ని అడగండి.", "Kannada": "ಅಥವಾ ನಿಮ್ಮ ಸ್ಥಳೀಯ ಕೃಷಿ ಅಧಿಕಾರಿ / ಕೃಷಿ ವಿಜ್ಞಾನ ಕೇಂದ್ರವನ್ನು ಕೇಳಿ.", "Bengali": "অথবা আপনার স্থানীয় কৃষি আধিকারিক / কৃষি বিজ্ঞান কেন্দ্রকে জিজ্ঞাসা করুন।", "Punjabi": "ਜਾਂ ਆਪਣੇ ਸਥਾਨਕ ਖੇਤੀਬਾੜੀ ਅਧਿਕਾਰੀ / ਕ੍ਰਿਸ਼ੀ ਵਿਗਿਆਨ ਕੇਂਦਰ ਨੂੰ ਪੁੱਛੋ।"},
+    "Waiting period not found on the label.": {"Hindi": "लेबल पर प्रतीक्षा अवधि नहीं मिली।", "Marathi": "लेबलवर प्रतीक्षा कालावधी सापडला नाही।", "Gujarati": "લેબલ પર રાહ જોવાનો સમયગાળો મળ્યો નથી.", "Tamil": "லேபிளில் காத்திருப்பு காலம் கிடைக்கவில்லை.", "Telugu": "లేబుల్‌లో వేచి ఉండే కాలం కనిపించలేదు.", "Kannada": "ಲೇಬಲ್‌ನಲ್ಲಿ ಕಾಯುವ ಅವಧಿ ಸಿಗಲಿಲ್ಲ.", "Bengali": "লেবেলে অপেক্ষার সময় পাওয়া যায়নি।", "Punjabi": "ਲੇਬਲ 'ਤੇ ਉਡੀਕ ਸਮਾਂ ਨਹੀਂ ਮਿਲਿਆ।"},
+}
+SOIL_NAMES = {
+    "Sandy / light soil": {"Hindi": "रेतीली / हल्की मिट्टी", "Marathi": "वालुकामय / हलकी माती", "Gujarati": "રેતાળ / હળવી માટી", "Tamil": "மணல் / இலகுவான மண்", "Telugu": "ఇసుక / తేలికపాటి నేల", "Kannada": "ಮರಳು / ಹಗುರವಾದ ಮಣ್ಣು", "Bengali": "বালুকাময় / হালকা মাটি", "Punjabi": "ਰੇਤਲੀ / ਹਲਕੀ ਮਿੱਟੀ"},
+    "Red soil": {"Hindi": "लाल मिट्टी", "Marathi": "लाल माती", "Gujarati": "લાલ માટી", "Tamil": "சிவப்பு மண்", "Telugu": "ఎర్ర నేల", "Kannada": "ಕೆಂಪು ಮಣ್ಣು", "Bengali": "লাল মাটি", "Punjabi": "ਲਾਲ ਮਿੱਟੀ"},
+    "Black cotton soil": {"Hindi": "काली कपास मिट्टी", "Marathi": "काळी कापूस माती", "Gujarati": "કાળી કપાસ માટી", "Tamil": "கருப்பு பருத்தி மண்", "Telugu": "నల్ల పత్తి నేల", "Kannada": "ಕಪ್ಪು ಹತ್ತಿ ಮಣ್ಣು", "Bengali": "কালো তুলো মাটি", "Punjabi": "ਕਾਲੀ ਕਪਾਹ ਮਿੱਟੀ"},
+    "Alluvial soil": {"Hindi": "जलोढ़ मिट्टी", "Marathi": "गाळाची माती", "Gujarati": "કાંપની માટી", "Tamil": "வண்டல் மண்", "Telugu": "ఒండ్రు నేల", "Kannada": "ಮೆಕ್ಕಲು ಮಣ್ಣು", "Bengali": "পলি মাটি", "Punjabi": "ਜਲੋਢ ਮਿੱਟੀ"},
+    "Laterite soil": {"Hindi": "लैटेराइट मिट्टी", "Marathi": "लॅटेराइट माती", "Gujarati": "લેટેરાઇટ માટી", "Tamil": "லேட்டரைட் மண்", "Telugu": "లేటరైట్ నేల", "Kannada": "ಲ್ಯಾಟರೈಟ್ ಮಣ್ಣು", "Bengali": "ল্যাটেরাইট মাটি", "Punjabi": "ਲੈਟਰਾਈਟ ਮਿੱਟੀ"},
+    "Clay soil": {"Hindi": "चिकनी मिट्टी", "Marathi": "चिकण माती", "Gujarati": "ચીકણી માટી", "Tamil": "களிமண்", "Telugu": "బంకమట్టి", "Kannada": "ಜೇಡಿಮಣ್ಣು", "Bengali": "এঁটেল মাটি", "Punjabi": "ਚਿਕਣੀ ਮਿੱਟੀ"},
+}
+def us(key, language_value):
+    return UI_STRINGS.get(key, {}).get(language_value, key)
+def soil_display(name, language_value):
+    return SOIL_NAMES.get(name, {}).get(language_value, name)
+
 def safe_explain(fn, *args):
-    """Call a Gemma explain function, retrying once on 'client has been closed'.
-    Root cause (verified): explain.py/extract.py create the google-genai
-    client inline — get_client().models.generate_content(...) — so Python
-    can garbage-collect the client mid-request and its finalizer closes
-    the HTTP pool. The fix below (persistent client in session_state)
-    prevents that; this retry is only a backup, and it first drops the
-    closed client so the retry builds a fresh one."""
     try:
         return fn(*args)
     except Exception as e:
         if "client has been closed" in str(e).lower():
-            st.session_state.pop("genai_client", None)
+            st.session_state.pop("local_client", None)
             return fn(*args)
         raise
 
 
-# ------------------------------------------------------------------ ROOT FIX
-# Hold ONE google-genai client in session_state and make explain/extract
-# use it, instead of creating a throwaway client inline on every call.
-# A throwaway client can be garbage-collected mid-request, closing its
-# HTTP pool — that is exactly the "client has been closed" error.
-# This is lazy: it only creates a client on the first Gemma call, so a
-# missing API key still shows the friendly error, not a startup crash.
 try:
     import kisanlabel.client as _client_mod
     import kisanlabel.explain as _explain_mod
     import kisanlabel.extract as _extract_mod
 
     def _get_persistent_client():
-        if "genai_client" not in st.session_state:
-            st.session_state["genai_client"] = _client_mod.get_client()
-        return st.session_state["genai_client"]
+        if "local_client" not in st.session_state:
+            st.session_state["local_client"] = _client_mod.get_client()
+        return st.session_state["local_client"]
 
     _explain_mod.get_client = _get_persistent_client
     _extract_mod.get_client = _get_persistent_client
 except Exception:
-    pass  # if kisanlabel is not importable here, the original code path runs
+    pass
 
 
-# ------------------------------------------------------------------ page + style
 st.set_page_config(page_title="KisanLabel 🌾", page_icon="🌾", layout="centered")
 st.markdown("""
 <style>
-  .main { max-width: 760px; }
-  html, body { font-size: 18px; }
-  h1 { font-size: 2.2rem !important; line-height: 1.1; }
-  h2, h3 { margin-top: 1.2rem !important; }
+  /* Beauty pass only: no logic, widget names, or text changed below.
+     Same classes as the proven ui.py, just richer styling. */
+  .main { max-width: 820px; }
+  html, body { font-size: 18px; font-family: 'Inter', system-ui, sans-serif; }
+  .stApp {
+    background-color: #FFF9EC;
+    background-image: radial-gradient(#EBDDC0 1.2px, transparent 1.2px);
+    background-size: 24px 24px;
+  }
+  #MainMenu, footer { visibility: hidden; }
+  h1 { font-size: 2.4rem !important; line-height: 1.05; font-family: 'Baloo 2', system-ui, sans-serif; }
+  h2, h3 { margin-top: 1.3rem !important; color: #1B5E20; font-family: 'Baloo 2', system-ui, sans-serif; }
+  h3 { border-bottom: 3px solid #FFD54F; padding-bottom: 0.25rem; }
   .stButton > button {
-    width: 100%; background: #1B5E20; color: #fff; border: none;
-    font-size: 1.15rem; font-weight: 800; padding: 0.9rem 1rem; border-radius: 16px;
+    width: 100%; background: linear-gradient(135deg, #1B5E20, #2E7D32); color: #fff; border: none;
+    font-size: 1.15rem; font-weight: 800; padding: 0.95rem 1rem; border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(27, 94, 32, 0.28);
   }
-  .stButton > button:hover { background: #2E7D32; color: #fff; }
+  .stButton > button:hover { background: linear-gradient(135deg, #2E7D32, #43A047); color: #fff; transform: translateY(-1px); }
+  .stButton > button:active { transform: translateY(0px); box-shadow: 0 4px 10px rgba(27, 94, 32, 0.28); }
   .hero {
-    background: linear-gradient(135deg, #E8F5E9, #FFF8E1);
-    border: 2px dashed #81C784; border-radius: 22px; padding: 1.2rem 1.4rem;
+    background: linear-gradient(135deg, #E8F5E9, #FFF3C4);
+    border: 2px solid #D4A017; border-left: 10px solid #FF9933; border-radius: 24px;
+    padding: 1.3rem 1.5rem; box-shadow: 0 12px 30px rgba(27, 94, 32, 0.14);
   }
+  .banner { margin: 0.2rem 0 0.2rem 0; border-radius: 24px; overflow: hidden;
+    border: 2px solid #D4A017; box-shadow: 0 12px 30px rgba(27, 94, 32, 0.16); }
+  .banner svg { width: 100% !important; height: auto !important; display: block; }
   .hero p { margin: 0.25rem 0; color: #263238; }
   .label-card {
-    background: #FFFDF5; border: 2px solid #1B5E20; border-radius: 20px;
-    padding: 1.2rem 1.4rem; margin: 1rem 0;
+    background: #FFFFFF; border: 2px solid #D4A017; border-left: 8px solid #1B5E20; border-radius: 22px;
+    padding: 1.3rem 1.5rem; margin: 1rem 0; box-shadow: 0 12px 30px rgba(38, 50, 56, 0.12);
   }
   .dose-hero {
-    background: #1B5E20; color: #fff; border-radius: 20px;
-    padding: 1.4rem; text-align: center; margin: 1rem 0;
+    background: linear-gradient(135deg, #123F16, #1B5E20 55%, #2E7D32); color: #fff; border-radius: 24px;
+    padding: 1.6rem; text-align: center; margin: 1.1rem 0; border: 2px solid #FFD54F;
+    box-shadow: 0 16px 34px rgba(27, 94, 32, 0.32);
   }
-  .dose-hero .big { font-size: 2.8rem; font-weight: 900; line-height: 1; }
-  .dose-hero .small { opacity: 0.92; margin-top: 0.4rem; }
+  .dose-hero .big { font-size: 3.1rem; font-weight: 900; line-height: 1; font-family: 'Baloo 2', system-ui, sans-serif; }
+  .dose-hero .small { opacity: 0.95; margin-top: 0.45rem; }
   .timeline { display: flex; gap: 0.6rem; text-align: center; }
   .timeline > div {
-    flex: 1; background: #F1F8E9; border-radius: 14px; padding: 0.8rem 0.4rem;
+    flex: 1; background: #FFFFFF; border-top: 5px solid #FF9933; border-radius: 16px;
+    padding: 0.9rem 0.4rem; box-shadow: 0 8px 20px rgba(38, 50, 56, 0.10);
   }
   .timeline b { display: block; font-size: 1.05rem; }
-  .stepbar { font-weight: 800; color: #1B5E20; letter-spacing: 0.02em; }
+  .stepbar {
+    display: inline-block; background: #1B5E20; color: #fff; font-weight: 800;
+    letter-spacing: 0.02em; padding: 0.45rem 1rem; border-radius: 999px; margin-top: 0.8rem;
+    box-shadow: 0 6px 16px rgba(27, 94, 32, 0.25);
+  }
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------------------------------------------------------ header + steps
+
 label = st.session_state.get("label")
 step = 3 if label else (2 if st.session_state.get("photo_done") else 1)
-st.markdown(f"""
+
+
+try:
+    import base64 as _base64
+    from pathlib import Path as _Path
+
+    _banner_path = _Path(__file__).parent / "banner.svg"
+    _banner_b64 = _base64.b64encode(_banner_path.read_bytes()).decode("ascii")
+    st.markdown(
+        f'<div class="banner"><img src="data:image/svg+xml;base64,{_banner_b64}" '
+        'style="width:100%;height:auto;display:block;" /></div>',
+        unsafe_allow_html=True,
+    )
+except Exception:
+    st.markdown("""
 <div class="hero">
   <h1>🌾 KisanLabel</h1>
   <p><b>Photo of a label → dose for <i>your</i> tank, in <i>your</i> language.</b></p>
   <p>For farmers, farm workers and shop staff. No guessing — if it is not on the label, we say so.</p>
 </div>
+""", unsafe_allow_html=True)
+st.markdown(f"""
 <p class="stepbar">{'✅' if step > 1 else '①'} Photo &nbsp;→&nbsp; {'✅' if step > 2 else '②'} Your field &nbsp;→&nbsp; {'✅' if step > 2 else '③'} Result card</p>
 """, unsafe_allow_html=True)
 
 mode = pick("What do you want to do?", ["📷 Scan a label", "🔎 Find a product"], key="mode")
 
-# Shared field controls — changing these NEVER re-calls Gemma, only Python maths.
+
 st.markdown("### 🌾 Your field")
 col_a, col_b = st.columns(2)
 with col_a:
     lang_label = pick("Language", list(LANGUAGES), key="lang")
 with col_b:
     soil_key = st.selectbox("Soil type", list(SOILS), format_func=SOILS.get, key="soil")
-language = LANGUAGES.get(lang_label, "English")  # belt-and-braces: never crash on None
+language = LANGUAGES.get(lang_label, "English")
 soil_name = SOILS[soil_key]
 tank = st.slider("Sprayer tank size (litres) — drag it, the dose updates live",
                  min_value=5, max_value=25, value=16, step=1, key="tank")
 spray_date = st.date_input("Spray date", dt.date.today(), key="spray_date")
 st.caption("💡 Dragging the tank slider does not call the AI again. The dose is recalculated in Python. Changing language changes the headings below — tap 'Explain' again to re-translate the paragraph.")
 
-# ------------------------------------------------------------------ scan a label
+
 if mode == "📷 Scan a label":
     st.markdown("### ① Photo of the label")
     up_col, cam_col = st.columns(2)
@@ -453,7 +475,7 @@ if mode == "📷 Scan a label":
     if st.session_state.get("demo"):
         st.warning("⚠️ DEMO LABEL — for showing the UI only. Not real advice, not a real product.")
 
-    # ---- result card, styled like a printed label
+
     tox_bg, tox_fg = TOXICITY_CSS.get(label.get("toxicity_color"), ("#37474F", "#ECEFF1"))
     st.markdown(f"""
     <div class="label-card">
@@ -481,9 +503,9 @@ if mode == "📷 Scan a label":
     if tank_dose:
         st.markdown(f"""
         <div class="dose-hero">
-          <div style="font-size:1rem; opacity:0.9;">MIX IN ONE {tank:g} L TANK</div>
+          <div style="font-size:1rem; opacity:0.9;">{us("Mix in one", language)} {tank:g} L {us("tank", language)}</div>
           <div class="big">{tank_dose.amount} {tank_dose.unit}</div>
-          <div class="small">Working: {tank_dose.how} &nbsp;·&nbsp; One tank covers about {acres} acre</div>
+          <div class="small">{us("Working", language)}: {tank_dose.how} &nbsp;·&nbsp; {us("One tank covers about", language)} {acres} {us("acre", language)}</div>
         </div>
         """, unsafe_allow_html=True)
     else:
@@ -493,61 +515,67 @@ if mode == "📷 Scan a label":
     if harvest:
         st.markdown(f"""
         <div class="timeline">
-          <div>🌱<b>Spray</b>{spray_date.strftime("%d %b %Y")}</div>
-          <div>⏳<b>Wait</b>{label['pre_harvest_interval_days']} days</div>
-          <div>🌾<b>Harvest from</b>{harvest.strftime("%d %b %Y")}</div>
+          <div>🌱<b>{us("Spray", language)}</b>{spray_date.strftime("%d %b %Y")}</div>
+          <div>⏳<b>{us("Wait", language)}</b>{label['pre_harvest_interval_days']} {us("days", language)}</div>
+          <div>🌾<b>{us("Harvest from", language)}</b>{harvest.strftime("%d %b %Y")}</div>
         </div>
         """, unsafe_allow_html=True)
     else:
-        st.warning("Waiting period not found on the label.")
+        st.warning(us("Waiting period not found on the label.", language))
 
-    st.markdown(f"### 🪱 {tr(language, 'Cautions for', 'सावधानियाँ', 'काळजी')} {soil_name}")
+    st.markdown(f"### 🪱 {tr(language, 'Cautions for', 'सावधानियाँ', 'काळजी')} {soil_display(soil_name, language)}")
     for n in notes:
         st.write("• " + tr_known(n, language))
-    if label.get("unreadable_or_missing"):
-        st.warning("Could not read: " + ", ".join(label["unreadable_or_missing"]) + ". Retake in better light.")
 
-    # ---- interactive safety checklist (user ticks, progress fills)
+
+    _unreadable = [x for x in (label.get("unreadable_or_missing") or []) if isinstance(x, str) and x.strip()]
+    if _unreadable:
+        st.warning("Could not read: " + ", ".join(_unreadable) + ". Retake in better light.")
+
+
     st.markdown(f"### 🧤 {tr(language, 'Safety check — tick before you spray', 'सुरक्षा जाँच — छिड़काव से पहले टिक करें', 'सुरक्षा तपासणी — फवारणीपूर्वी टिक करा')}")
-    ppe_items = list(dict.fromkeys((label.get("safety_steps") or []) + [
+    _safety = [x for x in (label.get("safety_steps") or []) if isinstance(x, str) and x.strip()]
+    ppe_items = list(dict.fromkeys(_safety + [
         "Wear gloves", "Wear a mask", "Wear long sleeves", "Wear goggles", "Wash hands after spraying"]))
-    # Checkbox labels are translated for known items; the key stays English
-    # so ticking survives a language switch.
+
+
     ticks = [st.checkbox(tr_known(item, language), key=f"ppe_{i}") for i, item in enumerate(ppe_items)]
-    st.caption("Label wording stays as printed so you can check it against the bottle — the Explain paragraph below translates it in full.")
+    st.caption(us("Label wording stays as printed so you can check it against the bottle — the Explain paragraph below translates it in full.", language))
     done = sum(ticks)
-    st.progress(done / max(len(ticks), 1), text=f"Safety ready: {done}/{len(ticks)} ticked")
+    st.progress(done / max(len(ticks), 1), text=f"{us('Safety ready', language)}: {done}/{len(ticks)} {us('ticked', language)}")
     if done == len(ticks):
-        st.success("✅ All safety steps ticked. Still follow the printed label.")
-    if label.get("first_aid"):
-        with st.expander("🩹 First aid (from the label)"):
-            for f in label["first_aid"]:
+        st.success("✅ " + us("All safety steps ticked. Still follow the printed label.", language))
+    _first_aid = label.get("first_aid") or []
+    if isinstance(_first_aid, str):
+        _first_aid = [_first_aid]
+    _first_aid = [f for f in _first_aid if isinstance(f, str) and f.strip()]
+    if _first_aid:
+        with st.expander("🩹 " + us("First aid (from the label)", language)):
+            for f in _first_aid:
                 st.write("• " + f)
 
-    # Explain is STORED in session_state, so it does not vanish when you
-    # move the tank slider, and it is re-generated in the NEW language
-    # when you tap it again after switching language.
-    if st.button(f"🗣️ Explain in {lang_label}"):
+
+    if st.button(f"🗣️ {us('Explain', language)} {lang_label}"):
         with st.spinner("Writing a simple explanation…"):
             try:
                 facts = build_facts(label, use, tank_dose, acres, harvest, tank, soil_name, notes)
-                # Retry once if the previous run's HTTP client was closed
-                # (e.g. you clicked / changed something mid-request).
+
+
                 st.session_state["explanation"] = safe_explain(explain, facts, language)
                 st.session_state["explanation_lang"] = language
             except Exception as e:
-                # FIX: never crash the whole page on a missing/invalid API key.
-                # The dose card above still works — only Explain needs Gemma.
+
+
                 st.error(f"Could not write the explanation: {e}")
-                st.info("Fix: copy .env.example to .env, paste your free Gemini API key from Google AI Studio into it, then restart Streamlit (Ctrl + C, then run it again). Do not commit .env to GitHub.")
+                st.info("Fix: make sure Ollama is running and gemma3:4b is pulled (ollama pull gemma3:4b), then restart Streamlit. No API key is used.")
     if st.session_state.get("explanation"):
         if st.session_state.get("explanation_lang") != language:
             st.info(f"Language changed to {lang_label}. Tap 'Explain in {lang_label}' again to translate this result.")
         st.markdown(st.session_state["explanation"])
-    with st.expander("🔍 Raw data read from the label (for judges)"):
+    with st.expander("🔍 " + us("Raw data read from the label (for judges)", language)):
         st.json(label)
 
-# ------------------------------------------------------------------ find a product
+
 else:
     st.markdown("### 🔎 Find a product")
     st.write("Suggestions come **only** from the verified list — the AI never invents a product.")
@@ -579,7 +607,7 @@ else:
                     st.markdown(safe_explain(explain_recommendation, crop_in, pest_in, soil_name, matches[:5], cautions, language))
                 except Exception as e:
                     st.error(f"Could not write the explanation: {e}")
-                    st.info("Fix: copy .env.example to .env, paste your free Gemini API key from Google AI Studio into it, then restart Streamlit.")
+                    st.info("Fix: make sure Ollama is running and gemma3:4b is pulled (ollama pull gemma3:4b), then restart Streamlit. No API key is used.")
 
 st.divider()
-st.caption(f"Always check the printed label. Unsure? Call {HELPLINE} or ask your local agriculture officer / Krishi Vigyan Kendra.")
+st.caption(f"{us('Always check the printed label.', language)} {us('Unsure? Call', language)} {HELPLINE} {us('or ask your local agriculture officer / Krishi Vigyan Kendra.', language)}")

@@ -1,10 +1,3 @@
-"""Soil-aware cautions.
-
-Important: which pesticide to use depends mainly on the CROP and the PEST/DISEASE.
-Soil type changes how a chemical behaves (washes away, sticks, lasts) and how much a
-soil-applied product may need adjusting. So soil is used here to give cautions and to
-adjust advice, NOT to pick a chemical on its own."""
-
 SOILS = {
     "sandy": "Sandy / light soil",
     "red": "Red soil",
@@ -45,7 +38,6 @@ FOLIAR = "This is sprayed on leaves, so soil type matters less. Still avoid spra
 
 
 def soil_cautions(soil_key, pesticide_type=None, application_method=None):
-    """Plain-language cautions for this soil and this kind of product."""
     notes = list(GENERAL.get(soil_key, []))
     if application_method == "soil application" or pesticide_type == "herbicide":
         notes.append(SOIL_ACTING)
