@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/Hacktoberfest-26-orange" alt="Hacktoberfest 26">
 </p>
 
-<<<<<<< HEAD
 Pesticide labels are dense and often in English or mixed languages😵‍💫. Wrong use causes illness🤒,
 crop damage‼️ and wasted money. KisanLabel lets a farmer **take a photo of the label** and get:
 
@@ -71,7 +70,6 @@ flowchart LR
 > [!IMPORTANT]
 > **The AI never does the arithmetic.** A wrong number on a pesticide can hurt someone, so the model only *reads* and *explains*. Doses and dates come from tested Python code.
 
-<<<<<<< HEAD
 ## Soil and product recommendations💭 (how it's kept safe)
 
 Which pesticide to use depends mainly on the **crop and pest/disease🦠**, not on soil. Soil changes
@@ -130,7 +128,6 @@ curl -F "image=@samples/label.jpg" http://localhost:8000/api/label/read
 
 Built in: image type and 8 MB limits, per-IP rate limit on Gemma endpoints, clean error messages, CORS via `CORS_ORIGINS`, and the API key stays on the server.
 
-<<<<<<< HEAD
 ## Run it🚀
 =======
 </details>
@@ -143,7 +140,6 @@ Built in: image type and 8 MB limits, per-IP rate limit on Gemma endpoints, clea
 pytest
 ```
 
-<<<<<<< HEAD
 ## Models, tools and licenses📦
 =======
 The tests use fake model replies, so they need no API key or internet.
@@ -187,7 +183,6 @@ The tests use fake model replies, so they need no API key or internet.
 | CIB&RC and agriculture-university data (we add) | Verified product list | Check each source's terms |
 | **This project** | | MIT (see `LICENSE`) |
 
-<<<<<<< HEAD
 ## AI tools used while building⛏️
 =======
 **AI tools used while building:** parts of the scaffold were drafted with an AI assistant (Claude). The team reviewed the code and can explain every module.
@@ -195,7 +190,6 @@ The tests use fake model replies, so they need no API key or internet.
 
 ## ⚠️ Safety and limits
 
-<<<<<<< HEAD
 ## Limits and safety⚪️
 =======
 > [!WARNING]
@@ -207,7 +201,6 @@ The tests use fake model replies, so they need no API key or internet.
 - 🎯 Doses depend on crop and pest, so the farmer must pick the right row from the label.
 - 🌐 Translations are model-generated and should be checked by native speakers before real rollout.
 
-<<<<<<< HEAD
 ## Ideas for next steps🌀
 
 - Offline / on-device Gemma for villages with poor internet
