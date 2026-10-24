@@ -1,6 +1,12 @@
+"""Explain label facts with a LOCAL Gemma model via Ollama.
+
+Same prompts, same facts-only rule, same function signatures as before —
+only the transport changed: Gemini API out, localhost Ollama in.
+"""
+
 import json
 
-from .client import MODEL, get_client
+from .client import MODEL, chat
 
 HELPLINE = "Kisan Call Centre 1800-180-1551"
 
@@ -68,7 +74,7 @@ def build_facts(label, use, tank_dose, acres, harvest_date, tank_litres, soil_na
 
 
 def _ask(prompt):
-    return get_client().models.generate_content(model=MODEL, contents=prompt).text
+    return chat(prompt, temperature=0.3, num_predict=1024)
 
 
 def explain(facts: dict, language_name: str) -> str:
