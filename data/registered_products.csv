@@ -1,1 +1,26 @@
-crop,pest,product_name,active_ingredient,pesticide_type,application_method,source_url
+product_name,active_ingredient,crop,pest,pesticide_type,application_method
+Imidacloprid 17.8% SL,Imidacloprid 17.8% SL,cotton,aphid,insecticide,foliar spray
+Imidacloprid 17.8% SL,Imidacloprid 17.8% SL,cotton,jassid,insecticide,foliar spray
+Imidacloprid 17.8% SL,Imidacloprid 17.8% SL,tomato,aphid,insecticide,foliar spray
+Imidacloprid 17.8% SL,Imidacloprid 17.8% SL,chilli,whitefly,insecticide,foliar spray
+Thiamethoxam 25% WG,Thiamethoxam 25% WG,cotton,jassid,insecticide,foliar spray
+Thiamethoxam 25% WG,Thiamethoxam 25% WG,rice,brown planthopper,insecticide,foliar spray
+Thiamethoxam 25% WG,Thiamethoxam 25% WG,tomato,whitefly,insecticide,foliar spray
+Chlorantraniliprole 18.5% SC,Chlorantraniliprole 18.5% SC,tomato,fruit borer,insecticide,foliar spray
+Chlorantraniliprole 18.5% SC,Chlorantraniliprole 18.5% SC,cotton,bollworm,insecticide,foliar spray
+Chlorantraniliprole 18.5% SC,Chlorantraniliprole 18.5% SC,rice,stem borer,insecticide,foliar spray
+Chlorantraniliprole 18.5% SC,Chlorantraniliprole 18.5% SC,cabbage,diamondback moth,insecticide,foliar spray
+Acetamiprid 20% SP,Acetamiprid 20% SP,cotton,aphid,insecticide,foliar spray
+Acetamiprid 20% SP,Acetamiprid 20% SP,chilli,aphid,insecticide,foliar spray
+Fipronil 5% SC,Fipronil 5% SC,rice,stem borer,insecticide,foliar spray
+Fipronil 5% SC,Fipronil 5% SC,chilli,thrips,insecticide,foliar spray
+Emamectin benzoate 5% SG,Emamectin benzoate 5% SG,cotton,bollworm,insecticide,foliar spray
+Emamectin benzoate 5% SG,Emamectin benzoate 5% SG,tomato,fruit borer,insecticide,foliar spray
+Spinosad 45% SC,Spinosad 45% SC,cotton,bollworm,insecticide,foliar spray
+Spinosad 45% SC,Spinosad 45% SC,tomato,fruit borer,insecticide,foliar spray
+Acephate 75% SP,Acephate 75% SP,cotton,jassid,insecticide,foliar spray
+Acephate 75% SP,Acephate 75% SP,chilli,jassid,insecticide,foliar spray
+Dimethoate 30% EC,Dimethoate 30% EC,tomato,aphid,insecticide,foliar spray
+Mancozeb 75% WP,Mancozeb 75% WP,tomato,early blight,fungicide,foliar spray
+Mancozeb 75% WP,Mancozeb 75% WP,potato,late blight,fungicide,foliar spray
+Hexaconazole 5% EC,Hexaconazole 5% EC,rice,sheath blight,fungicide,foliar spray

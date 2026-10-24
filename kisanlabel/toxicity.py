@@ -1,4 +1,3 @@
-# India's CIB&RC colour code printed on every pesticide label.
 TOXICITY = {
     "red": ("🔴", "Extremely toxic"),
     "yellow": ("🟡", "Highly toxic"),

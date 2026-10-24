@@ -1,11 +1,3 @@
-"""Extract label facts with a LOCAL Gemma model via Ollama.
-
-Same strict-JSON contract as before, same prompt, same output shape —
-only the transport changed: Gemini API out, localhost Ollama in.
-Dose maths still lives in kisanlabel/dose.py (Python, not the model),
-so the model can never invent a dose.
-"""
-
 from .client import MODEL, chat
 from .jsonparse import parse_json
 
@@ -45,9 +37,6 @@ Rules:
 
 
 def extract_label(image_bytes: bytes, mime_type: str = "image/jpeg") -> dict:
-    """Send the label photo to local Gemma (gemma3:4b, multimodal) and
-    get structured data back. mime_type is accepted for compatibility
-    with the old signature; Ollama takes the raw image bytes."""
     text = chat(EXTRACT_PROMPT, images=[image_bytes], temperature=0.0, num_predict=1500)
     data = parse_json(text)
     data.setdefault("uses", [])

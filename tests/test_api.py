@@ -1,4 +1,3 @@
-"""API tests. Gemma calls are replaced with fakes, so no API key or internet is needed."""
 import pytest
 from fastapi.testclient import TestClient
 

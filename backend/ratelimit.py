@@ -5,8 +5,6 @@ from fastapi import HTTPException, Request
 
 
 class RateLimiter:
-    """Tiny in-memory limit per client IP. Protects your Gemini API key/quota from abuse.
-    (One process only. Use Redis or an API gateway if you ever run several servers.)"""
 
     def __init__(self, limit: int = 20, window_seconds: int = 60):
         self.limit, self.window = limit, window_seconds

@@ -1,9 +1,3 @@
-"""Explain label facts with a LOCAL Gemma model via Ollama.
-
-Same prompts, same facts-only rule, same function signatures as before —
-only the transport changed: Gemini API out, localhost Ollama in.
-"""
-
 import json
 
 from .client import MODEL, chat

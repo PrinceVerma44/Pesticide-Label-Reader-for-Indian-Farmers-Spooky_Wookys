@@ -1,6 +1,3 @@
-"""Product finder. It only suggests products from data/registered_products.csv, a list YOUR
-TEAM fills from trusted sources (CIB&RC registered-products list, ICAR / state agriculture
-university advice). The AI never invents a product name."""
 import csv
 from pathlib import Path
 
