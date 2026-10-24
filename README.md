@@ -11,6 +11,18 @@
   <img src="https://img.shields.io/badge/Hacktoberfest-26-orange" alt="Hacktoberfest 26">
 </p>
 
+<<<<<<< HEAD
+Pesticide labels are dense and often in English or mixed languages😵‍💫. Wrong use causes illness🤒,
+crop damage‼️ and wasted money. KisanLabel lets a farmer **take a photo of the label** and get:
+
+- the **right dose for their own tank** (e.g. 16 L knapsack sprayer)
+- the **waiting period** and the **earliest safe harvest date📅🟢**
+- **safety steps and first aid⛑️**, explained in **their own language**
+- **⚠️cautions for their soil type** (sandy, red, black cotton, alluvial, laterite, clay)
+- a **Find a product** tab that suggests products for a crop + pest from a verified list☑️
+
+## How it works🛠️
+=======
 <p align="center">
   <b>Problem Statement #5: Pesticide Label Reader for Indian Farmers</b><br>
   Built by <b>Team Spooky Wookys</b> at Hacktoberfest 26 Hack Day (NST.ADYPU · NSTSDC, Pune)
@@ -19,6 +31,7 @@
 ---
 
 ## 😟 The problem
+>>>>>>> main
 
 Pesticide labels are **dense, tiny, and often in English or mixed languages**.
 Small and low-literacy farmers guess the dose, skip the waiting period, or skip the safety steps.
@@ -58,6 +71,20 @@ flowchart LR
 > [!IMPORTANT]
 > **The AI never does the arithmetic.** A wrong number on a pesticide can hurt someone, so the model only *reads* and *explains*. Doses and dates come from tested Python code.
 
+<<<<<<< HEAD
+## Soil and product recommendations💭 (how it's kept safe)
+
+Which pesticide to use depends mainly on the **crop and pest/disease🦠**, not on soil. Soil changes
+how a chemical behaves (washes into groundwater, sticks, lasts) and how a soil-applied product
+should be dosed. So:
+
+- `kisanlabel/soil.py` gives **soil-specific cautions⚠️** (e.g. leaching on sandy soil, cracks in black cotton soil).
+- `kisanlabel/recommend.py` suggests products **only from `data/registered_products.csv`**, a list the
+  team fills from CIB&RC and agriculture-university sources✅. The AI never invents a product.
+- The app always tells users to confirm with the agriculture officer👮 / KVK and read the printed label.
+
+## Backend API (FastAPI)⚙️
+=======
 > [!NOTE]
 > **Soil does not pick the pesticide.** The right product depends mainly on the **crop and the pest or disease**. Soil changes how a chemical behaves (washes away, sticks, lasts), so we use it for cautions. Product suggestions come **only** from `data/registered_products.csv`, which is filled from trusted sources. The AI never invents a product name.
 
@@ -70,6 +97,7 @@ cd Pesticide-Label-Reader-for-Indian-Farmers-Spooky_Wookys
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+>>>>>>> main
 
 cp .env.example .env               # Windows: copy .env.example .env
 # open .env and paste your free GEMINI_API_KEY from Google AI Studio
@@ -102,16 +130,24 @@ curl -F "image=@samples/label.jpg" http://localhost:8000/api/label/read
 
 Built in: image type and 8 MB limits, per-IP rate limit on Gemma endpoints, clean error messages, CORS via `CORS_ORIGINS`, and the API key stays on the server.
 
+<<<<<<< HEAD
+## Run it🚀
+=======
 </details>
 
 <details>
 <summary><b>🧪 Run the tests</b></summary>
+>>>>>>> main
 
 ```bash
 pytest
 ```
 
+<<<<<<< HEAD
+## Models, tools and licenses📦
+=======
 The tests use fake model replies, so they need no API key or internet.
+>>>>>>> main
 
 </details>
 
@@ -151,18 +187,35 @@ The tests use fake model replies, so they need no API key or internet.
 | CIB&RC and agriculture-university data (we add) | Verified product list | Check each source's terms |
 | **This project** | | MIT (see `LICENSE`) |
 
+<<<<<<< HEAD
+## AI tools used while building⛏️
+=======
 **AI tools used while building:** parts of the scaffold were drafted with an AI assistant (Claude). The team reviewed the code and can explain every module.
+>>>>>>> main
 
 ## ⚠️ Safety and limits
 
+<<<<<<< HEAD
+## Limits and safety⚪️
+=======
 > [!WARNING]
 > KisanLabel is a **helper, not a replacement for the printed label** or an agriculture officer.
 > If unsure, call the **Kisan Call Centre: 1800-180-1551** or visit your local Krishi Vigyan Kendra.
+>>>>>>> main
 
 - 📸 Photo quality matters. Glare, folds and tiny print reduce accuracy, and the app flags unreadable fields.
 - 🎯 Doses depend on crop and pest, so the farmer must pick the right row from the label.
 - 🌐 Translations are model-generated and should be checked by native speakers before real rollout.
 
+<<<<<<< HEAD
+## Ideas for next steps🌀
+
+- Offline / on-device Gemma for villages with poor internet
+- Voice input and read-aloud output
+- Warn when two products are mixed that should not be
+- Test set of real Indian labels with accuracte numbers
+- 
+=======
 ## 🗺️ Roadmap
 
 - [x] Label photo → structured data (Gemma 4 vision)
@@ -183,3 +236,4 @@ The tests use fake model replies, so they need no API key or internet.
 ## 📄 License
 
 MIT. See [`LICENSE`](LICENSE).
+>>>>>>> main
