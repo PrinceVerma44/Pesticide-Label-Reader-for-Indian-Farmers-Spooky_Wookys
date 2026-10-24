@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Gemma%204-4285F4?logo=google&logoColor=white" alt="Gemma 3">
+  <img src="https://img.shields.io/badge/Gemma%203-4285F4?logo=google&logoColor=white" alt="Gemma 3">
   <img src="https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/Streamlit-web%20app-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT">
@@ -54,7 +54,7 @@ A farmer **takes a photo of the label**. KisanLabel replies with what matters, i
 
 ```mermaid
 flowchart LR
-    A["📷 Label photo"] --> B["🧠 Gemma 4 vision<br/>reads the label"]
+    A["📷 Label photo"] --> B["🧠 Gemma 3 vision<br/>reads the label"]
     B --> C["📋 Structured JSON<br/>dose, wait days, safety"]
     C --> D["🧮 Plain Python maths<br/>tank dose, harvest date"]
     S["🌱 Soil type"] --> E
@@ -157,7 +157,7 @@ The tests use fake model replies, so they need no API key or internet.
 │   ├── service.py          #   logic behind the endpoints (no web framework)
 │   └── ratelimit.py        #   per-IP rate limit
 ├── kisanlabel/             # Core logic
-│   ├── extract.py          #   Gemma 4 reads the label photo
+│   ├── extract.py          #   Gemma 3 reads the label photo
 │   ├── dose.py             #   tank dose, acres, harvest date
 │   ├── soil.py             #   soil-aware cautions
 │   ├── recommend.py        #   verified product finder
@@ -174,7 +174,7 @@ The tests use fake model replies, so they need no API key or internet.
 
 | What | Used for | License |
 |---|---|---|
-| **Gemma 4** (`gemma-4-26b-a4b-it`, optional `gemma-4-31b-it`) | Reads label photos, writes explanations | See the Gemma 4 model card |
+| **Gemma 3** (`gemma-3-4b-it`, optional `gemma-3-27b-it`) | Reads label photos, writes explanations | See the Gemma 3 model card |
 | Streamlit | Web UI | Apache-2.0 |
 | FastAPI | Backend API | MIT |
 | google-genai (Python SDK) | Calls Gemma models | Apache-2.0 |
@@ -211,7 +211,7 @@ The tests use fake model replies, so they need no API key or internet.
 =======
 ## 🗺️ Roadmap
 
-- [x] Label photo → structured data (Gemma 4 vision)
+- [x] Label photo → structured data (Gemma 3 vision)
 - [x] Tank dose, acres per tank, safe harvest date
 - [x] Soil-aware cautions
 - [x] Explanations in 9 languages
