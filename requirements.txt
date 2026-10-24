@@ -1,7 +1,14 @@
+# Runtime — what the app and API actually import
 streamlit
 python-dotenv
 fastapi
 uvicorn[standard]
-python-multipart
-httpx
+python-multipart  # required by FastAPI for file uploads (UploadFile)
+
+# Tests only — not imported by the app or API
 pytest
+httpx  # required by fastapi.testclient (used in tests/test_api.py)
+
+# NOTE: the local Gemma client (kisanlabel/client.py) talks to Ollama over
+# HTTP with only the standard library (urllib), so no `ollama` or `httpx`
+# package is needed at runtime.

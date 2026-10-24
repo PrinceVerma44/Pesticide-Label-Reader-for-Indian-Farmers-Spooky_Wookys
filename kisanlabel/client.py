@@ -52,13 +52,3 @@ def chat(prompt, images=None, temperature=0.0, num_predict=1024):
     if not text.strip():
         raise RuntimeError(f"Local Gemma model '{MODEL}' returned an empty reply.")
     return text
-
-
-class LocalClient:
-
-    def chat(self, prompt, images=None, **kwargs):
-        return chat(prompt, images=images, **kwargs)
-
-
-def get_client():
-    return LocalClient()
