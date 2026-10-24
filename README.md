@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Gemma%204-via%20Gemini%20API-4285F4?logo=google&logoColor=white" alt="Gemma 4">
+  <img src="https://img.shields.io/badge/Gemma%204-4285F4?logo=google&logoColor=white" alt="Gemma 3">
   <img src="https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/Streamlit-web%20app-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT">
@@ -58,14 +58,14 @@ flowchart LR
     B --> C["📋 Structured JSON<br/>dose, wait days, safety"]
     C --> D["🧮 Plain Python maths<br/>tank dose, harvest date"]
     S["🌱 Soil type"] --> E
-    D --> E["🧠 Gemma 4 writes<br/>a simple explanation"]
+    D --> E["🧠 Gemma 3 writes<br/>a simple explanation"]
     E --> F["🗣️ Hindi, Marathi,<br/>Tamil and more"]
 ```
 
-1. **Read** (`kisanlabel/extract.py`): Gemma 4 looks at the photo and returns JSON. Anything it can't read becomes `null` and is listed as unreadable. It is told never to guess.
+1. **Read** (`kisanlabel/extract.py`): Gemma 3 looks at the photo and returns JSON. Anything it can't read becomes `null` and is listed as unreadable. It is told never to guess.
 2. **Calculate** (`kisanlabel/dose.py`): tank dose, acres covered and harvest date are computed in plain Python, with the working shown so anyone can check it.
 3. **Add soil context** (`kisanlabel/soil.py`): cautions for the farmer's soil and the kind of product.
-4. **Explain** (`kisanlabel/explain.py`): Gemma 4 turns the checked facts into short, simple text in the chosen language. It may only use those facts.
+4. **Explain** (`kisanlabel/explain.py`): Gemma 3 turns the checked facts into short, simple text in the chosen language. It may only use those facts.
 
 > [!IMPORTANT]
 > **The AI never does the arithmetic.** A wrong number on a pesticide can hurt someone, so the model only *reads* and *explains*. Doses and dates come from tested Python code.
@@ -98,7 +98,7 @@ pip install -r requirements.txt
 >>>>>>> main
 
 cp .env.example .env               # Windows: copy .env.example .env
-# open .env and paste your free GEMINI_API_KEY from Google AI Studio
+# open .env and paste your free GEMMA_API_KEY from Google AI Studio
 
 streamlit run app.py               # web app at http://localhost:8501
 ```
@@ -174,10 +174,10 @@ The tests use fake model replies, so they need no API key or internet.
 
 | What | Used for | License |
 |---|---|---|
-| **Gemma 4** (`gemma-4-26b-a4b-it`, optional `gemma-4-31b-it`) via the Gemini API | Reads label photos, writes explanations | See the Gemma 4 model card |
+| **Gemma 4** (`gemma-4-26b-a4b-it`, optional `gemma-4-31b-it`) | Reads label photos, writes explanations | See the Gemma 4 model card |
 | Streamlit | Web UI | Apache-2.0 |
 | FastAPI | Backend API | MIT |
-| google-genai (Python SDK) | Calls the Gemini API | Apache-2.0 |
+| google-genai (Python SDK) | Calls Gemma models | Apache-2.0 |
 | python-dotenv | Loads `.env` | BSD-3-Clause |
 | pytest | Tests | MIT |
 | CIB&RC and agriculture-university data (we add) | Verified product list | Check each source's terms |
