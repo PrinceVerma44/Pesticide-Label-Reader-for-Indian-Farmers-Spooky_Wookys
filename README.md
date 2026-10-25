@@ -21,7 +21,7 @@ crop damage‼️ and wasted money. KisanLabel lets a farmer **take a photo of t
 - a **Find a product** tab that suggests products for a crop + pest from a verified list☑️
 
 ## How it works🛠️
-=======
+
 <p align="center">
   <b>Problem Statement #5: Pesticide Label Reader for Indian Farmers</b><br>
   Built by <b>Team Spooky Wookys</b> at Hacktoberfest 26 Hack Day (NST.ADYPU · NSTSDC, Pune)
@@ -82,7 +82,7 @@ should be dosed. So:
 - The app always tells users to confirm with the agriculture officer👮 / KVK and read the printed label.
 
 ## Backend API (FastAPI)⚙️
-=======
+
 > [!NOTE]
 > **Soil does not pick the pesticide.** The right product depends mainly on the **crop and the pest or disease**. Soil changes how a chemical behaves (washes away, sticks, lasts), so we use it for cautions. Product suggestions come **only** from `data/registered_products.csv`, which is filled from trusted sources. The AI never invents a product name.
 
@@ -129,12 +129,12 @@ curl -F "image=@samples/label.jpg" http://localhost:8000/api/label/read
 Built in: image type and 8 MB limits, per-IP rate limit on Gemma endpoints, clean error messages, CORS via `CORS_ORIGINS`, and the API key stays on the server.
 
 ## Run it🚀
-=======
+
 </details>
 
 <details>
 <summary><b>🧪 Run the tests</b></summary>
->>>>>>> main
+
 
 ```bash
 pytest
@@ -143,7 +143,7 @@ pytest
 ## Models, tools and licenses📦
 =======
 The tests use fake model replies, so they need no API key or internet.
->>>>>>> main
+
 
 </details>
 
@@ -186,16 +186,16 @@ The tests use fake model replies, so they need no API key or internet.
 ## AI tools used while building⛏️
 =======
 **AI tools used while building:** parts of the scaffold were drafted with an AI assistant (Claude). The team reviewed the code and can explain every module.
->>>>>>> main
+
 
 ## ⚠️ Safety and limits
 
 ## Limits and safety⚪️
-=======
+
 > [!WARNING]
 > KisanLabel is a **helper, not a replacement for the printed label** or an agriculture officer.
 > If unsure, call the **Kisan Call Centre: 1800-180-1551** or visit your local Krishi Vigyan Kendra.
->>>>>>> 
+ 
 
 - 📸 Photo quality matters. Glare, folds and tiny print reduce accuracy, and the app flags unreadable fields.
 - 🎯 Doses depend on crop and pest, so the farmer must pick the right row from the label.
@@ -208,7 +208,7 @@ The tests use fake model replies, so they need no API key or internet.
 - Warn when two products are mixed that should not be
 - Test set of real Indian labels with accuracte numbers
 - 
-=======
+
 ## 🗺️ Roadmap
 
 - [x] Label photo → structured data (Gemma 3 vision)
@@ -229,4 +229,4 @@ The tests use fake model replies, so they need no API key or internet.
 ## 📄 License
 
 MIT. See [`LICENSE`](LICENSE).
->>>>>>> 
+ 
