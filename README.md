@@ -30,7 +30,7 @@ crop damage‼️ and wasted money. KisanLabel lets a farmer **take a photo of t
 ---
 
 ## 😟 The problem
->>>>>>> main
+>>>>>>> 
 
 Pesticide labels are **dense, tiny, and often in English or mixed languages**.
 Small and low-literacy farmers guess the dose, skip the waiting period, or skip the safety steps.
@@ -195,7 +195,7 @@ The tests use fake model replies, so they need no API key or internet.
 > [!WARNING]
 > KisanLabel is a **helper, not a replacement for the printed label** or an agriculture officer.
 > If unsure, call the **Kisan Call Centre: 1800-180-1551** or visit your local Krishi Vigyan Kendra.
->>>>>>> main
+>>>>>>> 
 
 - 📸 Photo quality matters. Glare, folds and tiny print reduce accuracy, and the app flags unreadable fields.
 - 🎯 Doses depend on crop and pest, so the farmer must pick the right row from the label.
@@ -229,4 +229,4 @@ The tests use fake model replies, so they need no API key or internet.
 ## 📄 License
 
 MIT. See [`LICENSE`](LICENSE).
->>>>>>> main
+>>>>>>> 
