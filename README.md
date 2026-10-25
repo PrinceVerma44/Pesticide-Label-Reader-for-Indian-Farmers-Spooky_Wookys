@@ -141,7 +141,7 @@ pytest
 ```
 
 ## Models, tools and licenses📦
-=======
+
 The tests use fake model replies, so they need no API key or internet.
 
 
@@ -184,7 +184,7 @@ The tests use fake model replies, so they need no API key or internet.
 | **This project** | | MIT (see `LICENSE`) |
 
 ## AI tools used while building⛏️
-=======
+
 **AI tools used while building:** parts of the scaffold were drafted with an AI assistant (Claude). The team reviewed the code and can explain every module.
 
 
